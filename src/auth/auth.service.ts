@@ -4,7 +4,15 @@ import {Injectable} from '@nestjs/common';
 @Injectable({})
 export class AuthService {
 
-	login(){}
+	signup(){
+		return {
+			'message': 'Successfully signed up'
+		}
+	}
 
-	register(){}
+	signin(){
+		return {
+			'message': 'Successful signed in'
+		}
+	}
 }
