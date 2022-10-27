@@ -1,10 +1,12 @@
 import {INestApplication, ValidationPipe, } from '@nestjs/common';
 import {Test} from '@nestjs/testing';
 
-import {AppModule} from '../src/app.module'
+import {AppModule} from '../src/app.module';
+import {PrismaService} from '../src/prisma/prisma.service';
 
 describe('App e2e', () => {
   let app:INestApplication;
+  let prisma: PrismaService;
   // Make replica of the main app run by the dev server
   // but solely for testing
   
@@ -26,6 +28,10 @@ describe('App e2e', () => {
 
     // initialize the app
     await app.init()
+    
+    prisma = app.get(PrismaService);
+
+    await prisma.cleanDb();
   });
 
   // Breakdown :: will be called when test is completed to remove
