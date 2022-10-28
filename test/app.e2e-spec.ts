@@ -109,6 +109,7 @@ describe('App e2e', () => {
         .post('/auth/signin')
         .withBody(authDto)
         .expectStatus(200)
+        .stores('userAccessToken', 'access_token')
       });
 
       it("should throw if email empty", () => {
@@ -137,11 +138,30 @@ describe('App e2e', () => {
 
   });
 
-  // describe("User", () => {
-  //   describe("Get current user", () => {});
+  describe("Users", () => {
+    describe("get me", () => {
+      it('should get current user', () => {
+        return pactum
+        .spec()
+        .get('/users/me')
+        .withHeaders({
+          'Authorization': 'Bearer $S{userAccessToken}'
+        })
+        .expectStatus(200)
+      });
 
-  //   describe("Edit user", () => {});
-  // });
+      it('should throw when unauthenticated', () => {
+        return pactum
+        .spec()
+        .get('/users/me')
+        .expectStatus(401)
+      });
+
+
+    });
+
+    describe("Edit user", () => {});
+  });
 
   // describe("Bookmark", () => {
   //   describe("Create bookmark", () => {})
